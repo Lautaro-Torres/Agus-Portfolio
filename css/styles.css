@@ -140,15 +140,19 @@ a:hover { color: var(--ink-2); }
 }
 .nav__back { white-space: nowrap; font-size: 15px; font-weight: 500; text-decoration: none; }
 /* Sin monograma, el nombre es la marca: se ve siempre. El link de volver se oculta debajo de 900px. */
+/* Mobile: navbar más baja para dejarle lugar al hero */
 @media (max-width: 899.98px) {
+  .site-header { top: 12px; }
+  .nav { height: 56px; padding: 0 6px 0 18px; }
   .nav__back { display: none; }
   .nav__name { font-size: 16px; }
+  .nav .btn--sm { height: 44px; font-size: 14px; }
 }
 /* Celulares angostos: nombre y botón más compactos para que entren los dos en la píldora */
 @media (max-width: 399.98px) {
   .nav { padding-left: 16px; gap: 12px; }
   .nav__name { font-size: 15px; }
-  .nav .btn--sm { height: 44px; padding: 0 16px; font-size: 14px; }
+  .nav .btn--sm { padding: 0 16px; }
 }
 
 /* ---------- Botones ---------- */

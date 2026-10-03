@@ -11,10 +11,22 @@
   const marquee = document.querySelector('[data-marquee]');
   const track = document.querySelector('[data-marquee-track]');
   if (marquee && track) {
-    // Segunda copia, oculta para lectores de pantalla, para que el loop no tenga corte
-    const copy = track.firstElementChild.cloneNode(true);
-    copy.setAttribute('aria-hidden', 'true');
-    track.appendChild(copy);
+    // Copias ocultas para lectores de pantalla: tantas como hagan falta para cubrir el ancho
+    // visible más una vuelta. Con pocas marcas, dos copias no alcanzaban a llenar una pantalla
+    // ancha y quedaba un hueco al final.
+    const first = track.firstElementChild;
+    const gap = () => parseFloat(getComputedStyle(track).columnGap) || 0;
+    const step = () => first.offsetWidth + gap();
+    const fill = () => {
+      while (track.children.length * step() < marquee.clientWidth + step() * 2) {
+        const copy = first.cloneNode(true);
+        copy.setAttribute('aria-hidden', 'true');
+        track.appendChild(copy);
+      }
+    };
+    fill();
+    window.addEventListener('resize', fill);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fill);
 
     let x = 0;
     let paused = false;
@@ -31,8 +43,9 @@
       } else {
         if (!paused) {
           x -= dt * 0.04;
-          const half = track.scrollWidth / 2;
-          if (half && -x >= half) x += half;
+          // Vuelve exactamente una copia (con su separación): el salto es invisible
+          const w = step();
+          if (w && -x >= w) x += w;
         }
         track.style.transform = `translate3d(${x}px,0,0)`;
       }
