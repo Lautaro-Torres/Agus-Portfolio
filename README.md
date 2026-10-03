@@ -32,7 +32,7 @@ Se publica en Vercel desde la rama `main`: cada push se publica solo. Configurac
 Las URLs absolutas (`canonical`, `og:url`, `og:image`, `twitter:image`) usan la dirección pública del sitio. Si cambia el dominio, reemplazala en las cuatro páginas:
 
 ```bash
-sed -i 's#https://lautaro-torres.github.io/Agus-Portfolio#https://NUEVO-DOMINIO#g' *.html
+sed -i 's#https://www.agusisas.lat#https://NUEVO-DOMINIO#g' *.html
 ```
 
 WhatsApp, LinkedIn y X solo leen imágenes con dirección completa, por eso no van rutas relativas.
