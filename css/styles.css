@@ -8,6 +8,7 @@
   --paper-3: #E8E4DA;
   --ink: #0E0E0C;
   --ink-2: #3A3630;
+  --ink-3: #5E5850;   /* etiquetas: más suave que ink-2, AA en papel, tarjetas y cielo (≥4.9:1) */
   --ink-hover: #2A2824;
   --pink: #FF48A4;
   --lime: #CDFF4E;
@@ -39,12 +40,14 @@ a:hover { color: var(--ink-2); }
 /* ---------- Tipografía ---------- */
 
 .label {
+  /* Un solo estilo de eyebrow en todo el sitio, igual en mobile y desktop: chico y liviano */
   font-family: var(--font-label);
-  font-weight: 600;
-  font-size: 12px;
-  letter-spacing: .08em;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 1.5;
+  letter-spacing: .1em;
   text-transform: uppercase;
-  color: var(--ink-2);
+  color: var(--ink-3);
 }
 .accent { font-family: var(--font-serif); font-weight: 400; font-style: italic; letter-spacing: -.01em; }
 .h1 {
@@ -338,7 +341,7 @@ a:hover { color: var(--ink-2); }
   line-height: 1;
 }
 .metrics-minor__label { font-size: 14px; color: var(--ink-2); }
-.source { margin: 0; letter-spacing: .12em; line-height: 1.8; max-width: 90ch; }
+.source { margin: 0; line-height: 1.8; max-width: 90ch; }
 
 /* Bloque de cita */
 .quote-block {
