@@ -13,7 +13,8 @@ index.html               Home: hero, cuentas, método, habilidades, experiencia 
 caso-nubicom.html        Caso 01
 caso-gomez-roco.html     Caso 02
 caso-kenja-motors.html   Caso 03
-og-image.png             Imagen para compartir el link (1200×630)
+og/                      Imágenes para compartir cada página (1200×630): home y los tres casos
+favicon.svg, favicon.ico Favicon (monograma); icons/ y site.webmanifest para iPhone y Android
 css/styles.css           Sistema compartido: colores, tipografía, grilla, navbar, botones, bloques de los casos
 css/portfolio.css        Solo la home
 js/smooth-scroll.js      Scroll suave con mouse o trackpad (las 4 páginas)
@@ -24,11 +25,17 @@ assets/                  Foto del hero y logos (SVG a una tinta)
 
 Con `prefers-reduced-motion` activado, ninguna animación corre y la página muestra todo en su estado final.
 
-## Publicarlo en GitHub Pages
+## Publicación
 
-1. Subí el contenido de esta carpeta a la raíz de un repositorio.
-2. En el repositorio: **Settings → Pages → Deploy from a branch**, rama `main`, carpeta `/ (root)`.
-3. El sitio queda en `https://lautaro-torres.github.io/Agus-Portfolio/`. Las cuatro páginas ya apuntan `og:image` a `https://lautaro-torres.github.io/Agus-Portfolio/og-image.png`: si el repo cambia de nombre o se usa otro dominio, hay que actualizar esa dirección (WhatsApp y LinkedIn no leen rutas relativas).
+Se publica en Vercel desde la rama `main`: cada push se publica solo. Configuración del proyecto: Framework Preset **Other**, sin Build Command.
+
+Las URLs absolutas (`canonical`, `og:url`, `og:image`, `twitter:image`) usan la dirección pública del sitio. Si cambia el dominio, reemplazala en las cuatro páginas:
+
+```bash
+sed -i 's#https://lautaro-torres.github.io/Agus-Portfolio#https://NUEVO-DOMINIO#g' *.html
+```
+
+WhatsApp, LinkedIn y X solo leen imágenes con dirección completa, por eso no van rutas relativas.
 
 ## Tipografías
 
