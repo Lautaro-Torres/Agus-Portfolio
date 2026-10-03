@@ -1,0 +1,459 @@
+/* Portfolio — Agustina Isasmendi
+ * Fuentes: Fontshare (Cabinet Grotesk, General Sans, Zodiak). Las etiquetas usan General Sans, la misma del texto.
+ * Fallback Google Fonts si Fontshare no carga: Schibsted Grotesk, Plus Jakarta Sans, Instrument Serif. */
+
+:root {
+  --paper: #F7F5F0;
+  --paper-2: #F1EEE7;
+  --paper-3: #E8E4DA;
+  --ink: #0E0E0C;
+  --ink-2: #3A3630;
+  --ink-hover: #2A2824;
+  --pink: #FF48A4;
+  --lime: #CDFF4E;
+  --hairline: rgba(14, 14, 12, .15);
+
+  --font-display: 'Cabinet Grotesk', 'Schibsted Grotesk', sans-serif;
+  --font-text: 'General Sans', 'Plus Jakarta Sans', sans-serif;
+  --font-serif: 'Zodiak', 'Instrument Serif', serif;
+  --font-label: var(--font-text);
+
+  --ease: cubic-bezier(.2, .7, .3, 1);
+}
+
+html { scroll-behavior: smooth; overflow-x: clip; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-text);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+a { color: var(--ink); text-underline-offset: 3px; }
+a:hover { color: var(--ink-2); }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 8px; }
+
+.container { width: 90%; margin: 0 auto; }
+
+/* ---------- Tipografía ---------- */
+
+.label {
+  font-family: var(--font-label);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.accent { font-family: var(--font-serif); font-weight: 400; font-style: italic; letter-spacing: -.01em; }
+.h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(40px, 6.4vw, 104px);
+  letter-spacing: -.045em;
+  line-height: .94;
+  text-wrap: balance;
+}
+.h1 .accent { letter-spacing: -.02em; }
+.h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(36px, 4.8vw, 68px);
+  letter-spacing: -.036em;
+  line-height: .98;
+  text-wrap: balance;
+}
+.h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(22px, 2.2vw, 32px);
+  letter-spacing: -.024em;
+  line-height: 1.1;
+}
+.lead { margin: 0; font-size: 19px; line-height: 1.5; color: var(--ink-2); max-width: 60ch; text-wrap: pretty; }
+.body { margin: 0; font-size: 16px; line-height: 1.6; color: var(--ink-2); max-width: 66ch; text-wrap: pretty; }
+.marker { background: linear-gradient(to bottom, transparent 62%, var(--lime) 62%); color: var(--ink); }
+
+/* ---------- Grilla 12 columnas (una sola columna debajo de 900px) ---------- */
+
+.grid { display: grid; grid-template-columns: minmax(0, 1fr); column-gap: 24px; }
+@media (min-width: 900px) {
+  .grid { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+  .col-1-12 { grid-column: 1 / 12; }
+  .col-1-13 { grid-column: 1 / 13; }
+  .col-1-4 { grid-column: 1 / 4; }
+  .col-4-10 { grid-column: 4 / 10; }
+  .col-4-11 { grid-column: 4 / 11; }
+  .col-4-12 { grid-column: 4 / 12; }
+  .col-4-13 { grid-column: 4 / 13; }
+  .col-5-12 { grid-column: 5 / 12; }
+  .col-10-13 { grid-column: 10 / 13; }
+}
+.stack { display: flex; flex-direction: column; }
+.gap-16 { gap: 16px; }
+.gap-24 { gap: 24px; }
+.gap-32 { gap: 32px; }
+
+/* ---------- Navbar ---------- */
+
+.site-header {
+  position: fixed;
+  top: 16px;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+.nav {
+  pointer-events: auto;
+  width: 90%;
+  box-sizing: border-box;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 8px 0 16px;
+  background: rgba(255, 255, 255, .5);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  backdrop-filter: blur(18px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, .8);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, .9) inset, 0 8px 22px rgba(14, 14, 12, .1);
+  border-radius: 100px;
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .nav { background: var(--paper); }
+}
+.nav__brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); }
+.nav__name {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: -.02em;
+  white-space: nowrap;
+}
+.nav__back { white-space: nowrap; font-size: 15px; font-weight: 500; text-decoration: none; }
+/* Sin monograma, el nombre es la marca: se ve siempre. El link de volver se oculta debajo de 900px. */
+@media (max-width: 899.98px) {
+  .nav__back { display: none; }
+  .nav__name { font-size: 16px; }
+}
+/* Celulares angostos: nombre y botón más compactos para que entren los dos en la píldora */
+@media (max-width: 399.98px) {
+  .nav { padding-left: 16px; gap: 12px; }
+  .nav__name { font-size: 15px; }
+  .nav .btn--sm { height: 44px; padding: 0 16px; font-size: 14px; }
+}
+
+/* ---------- Botones ---------- */
+
+.btn {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  box-sizing: border-box;
+  border-radius: 100px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 300ms var(--ease), color 300ms var(--ease), transform 300ms var(--ease), box-shadow 300ms var(--ease);
+}
+.btn--primary { background: var(--ink); color: var(--paper); }
+.btn--primary:hover {
+  background: var(--ink-hover);
+  color: var(--paper);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(14, 14, 12, .2);
+}
+.btn--outline { border: 1.5px solid var(--ink); color: var(--ink); }
+.btn--outline:hover { background: var(--ink); color: var(--paper); transform: translateY(-2px); }
+.btn--sm { height: 48px; padding: 0 24px; font-size: 15px; }
+.btn--md { height: 52px; padding: 0 24px; font-size: 16px; }
+.btn--arrow { gap: 12px; padding: 0 6px 0 24px; }
+.btn__arrow {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--pink);
+  color: var(--ink);
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+}
+/* Flecha dibujada (no un carácter de texto): mismo trazo en todos los botones, escala con el círculo */
+.btn__icon { width: 45%; height: 45%; fill: none; stroke: currentColor; stroke-width: 2.25; stroke-linecap: round; stroke-linejoin: round; }
+.btn-row { display: flex; flex-wrap: wrap; gap: 12px; }
+
+/* ---------- Portada ---------- */
+
+.case-cover { padding: calc(96px + 48px) 0 64px; }
+.case-cover > .grid { row-gap: 32px; }
+.case-cover__meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+.case-cover__lead { margin-top: 16px; }
+
+.facts {
+  margin: 32px 0 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  border-top: 1px solid var(--hairline);
+}
+.facts__item { display: flex; flex-direction: column; gap: 8px; padding: 16px 16px 0 0; align-items: flex-start; }
+.facts__item dd { margin: 0; font-size: 16px; font-weight: 500; }
+.chip-figure {
+  display: inline-flex;
+  padding: 6px 12px;
+  border-radius: 100px;
+  background: var(--lime);
+  color: var(--ink);
+}
+.facts__item dd.chip-figure { font-size: 14px; font-weight: 600; }
+
+/* Chip de contorno (rubros, restricciones) */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { padding: 8px 14px; border-radius: 100px; border: 1px solid var(--ink); font-size: 13px; font-weight: 500; }
+
+/* ---------- Secciones del caso ---------- */
+
+.case-section {
+  row-gap: 24px;
+  padding: clamp(48px, 6vw, 96px) 0;
+  border-top: 1px solid var(--hairline);
+}
+.case-section__label { padding-top: 12px; }
+.case-section--close { row-gap: 32px; padding: clamp(64px, 8vw, 128px) 0; }
+.align-end { align-self: end; }
+.case-subblock { padding-top: 24px; }
+
+/* Filas tipo línea de tiempo */
+.rows { display: flex; flex-direction: column; border-bottom: 1px solid var(--hairline); }
+.rows__item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: 24px;
+  row-gap: 8px;
+  padding: 24px 0;
+  border-top: 1px solid var(--hairline);
+}
+@media (min-width: 900px) {
+  .rows__item { grid-template-columns: 240px minmax(0, 1fr); }
+  .rows--narrow .rows__item { grid-template-columns: 200px minmax(0, 1fr); }
+}
+.rows--list { list-style: none; margin: 0; padding: 0; }
+.rows__title { font-size: 16px; font-weight: 600; color: var(--ink); }
+
+/* Número de índice en mono (tarjetas, otros casos) */
+.index-num { font-family: var(--font-label); font-weight: 600; font-size: 12px; letter-spacing: .04em; font-variant-numeric: tabular-nums; }
+
+/* Dato récord a gran tamaño */
+.record {
+  background: var(--paper-2);
+  border: 1px solid var(--hairline);
+  border-radius: 24px;
+  padding: clamp(32px, 5vw, 64px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  container-type: inline-size;
+}
+.record__value {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(40px, 15cqi, 160px);
+  letter-spacing: -.05em;
+  line-height: .88;
+}
+.footnote { margin: 0; font-size: 14px; line-height: 1.6; color: var(--ink-2); max-width: 72ch; }
+
+/* Tarjetas */
+.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 24px; }
+.card {
+  background: var(--paper-2);
+  border: 1px solid var(--hairline);
+  border-radius: 24px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Checklist */
+.checklist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.checklist li {
+  display: flex;
+  gap: 12px;
+  padding: 12px 0;
+  border-top: 1px solid var(--hairline);
+  font-size: 15px;
+  line-height: 1.5;
+}
+.checklist li:last-child { border-bottom: 1px solid var(--hairline); }
+/* Tilde decorativo: el texto alternativo vacío evita que el lector de pantalla lo lea. */
+.checklist li::before { content: "✓"; content: "✓" / ""; }
+
+/* Métricas */
+.metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 16px; }
+.metric {
+  background: var(--paper-2);
+  border: 1px solid var(--hairline);
+  border-radius: 16px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: space-between;
+  min-height: 160px;
+  /* Las cifras se dimensionan según el ancho de su tarjeta, no de la pantalla: nunca se salen */
+  container-type: inline-size;
+}
+.metric__value {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(24px, 18cqi, 52px);
+  letter-spacing: -.04em;
+  line-height: 1;
+  white-space: nowrap;
+}
+.metric__label { font-size: 15px; color: var(--ink-2); }
+
+.metrics-minor {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+  border-top: 1px solid var(--hairline);
+}
+.metrics-minor__item { display: flex; flex-direction: column; gap: 8px; padding: 16px 16px 16px 0; container-type: inline-size; }
+.metrics-minor__value {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(18px, 15cqi, 26px);
+  letter-spacing: -.03em;
+  line-height: 1;
+}
+.metrics-minor__label { font-size: 14px; color: var(--ink-2); }
+.source { margin: 0; letter-spacing: .12em; line-height: 1.8; max-width: 90ch; }
+
+/* Bloque de cita */
+.quote-block {
+  background: var(--paper-2);
+  border: 1px solid var(--hairline);
+  border-radius: 24px;
+  padding: clamp(48px, 8vw, 128px) clamp(24px, 4vw, 64px);
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  margin: 32px 0 64px;
+}
+.quote-block__text {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-style: italic;
+  font-size: clamp(40px, 7vw, 112px);
+  line-height: 1;
+  letter-spacing: -.025em;
+  text-wrap: balance;
+}
+
+/* Cierre */
+.close__content { align-items: flex-start; }
+.close__title { max-width: 18ch; }
+.other-cases { display: flex; flex-direction: column; width: 100%; margin-top: 32px; }
+.other-cases > .label { padding-bottom: 12px; }
+.other-cases__link {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 20px 0;
+  border-top: 1px solid var(--hairline);
+  text-decoration: none;
+}
+.other-cases__link:last-child { border-bottom: 1px solid var(--hairline); }
+.other-cases__name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(22px, 2.2vw, 32px);
+  letter-spacing: -.024em;
+  flex: 1;
+}
+.other-cases__arrow { font-size: 20px; }
+
+/* ---------- Footer ---------- */
+
+.site-footer { background: var(--paper); padding: clamp(64px, 8vw, 96px) 0 32px; }
+.site-footer .container { display: flex; flex-direction: column; gap: 48px; }
+.site-footer__name {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(64px, 15.4vw, 224px);
+  letter-spacing: -.055em;
+  line-height: .84;
+}
+.site-footer__contact {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 16px;
+  border-top: 1px solid var(--hairline);
+  padding-top: 24px;
+  font-size: 15px;
+}
+.site-footer__contact a { text-decoration: none; }
+
+/* ---------- Movimiento reducido ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ---------- Logos de cuentas (SVG a una tinta, en el color del texto) ---------- */
+
+/* object-fit mantiene la proporción si max-width achica el ancho en pantallas angostas */
+.logo { display: block; width: auto; height: var(--logo-h, 32px); max-width: 100%; object-fit: contain; object-position: left center; }
+/* Los logos apilados (ícono arriba, nombre abajo) necesitan más alto para pesar lo mismo que los horizontales */
+.logo--stacked { --logo-h: 44px; }
+/* Marcador de dato faltante: nunca se inventa un dato, se marca en naranja */
+.missing {
+  display: inline-flex;
+  align-items: center;
+  background: #FF5A25;
+  color: var(--ink);
+  font-family: var(--font-label);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  border-radius: 100px;
+  line-height: 1;
+}
+/* Hueco de logo pendiente: rayado + marcador "falta" */
+.logo-missing { display: inline-flex; align-items: center; gap: 12px; }
+.logo-missing__box {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: repeating-linear-gradient(135deg, rgba(14, 14, 12, .1) 0 1px, transparent 1px 6px), var(--paper-3);
+}
+.case-cover__logo { --logo-h: clamp(40px, 4vw, 56px); }
+.case-cover__logo .logo--stacked { --logo-h: clamp(64px, 6vw, 88px); }
+
+/* ---------- Contador animado de cifras ---------- */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+/* Reserva el ancho de la cifra final para que nada se mueva mientras cuenta */
+.count { display: inline-block; font-variant-numeric: tabular-nums; }
