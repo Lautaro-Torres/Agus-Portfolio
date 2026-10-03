@@ -108,7 +108,9 @@
   position: relative;
   width: 90%;
   margin: 0 auto;
-  height: 100dvh;
+  /* svh en el celu: alto fijo que no cambia cuando aparece o se va la barra del navegador */
+  height: 100vh;
+  height: 100svh;
   display: flex;
   flex-direction: column;
   gap: 2vh;
@@ -117,6 +119,7 @@
   transform-origin: 50% 0;
 }
 /* En desktop con poco alto, el hero crece en vez de cortar contenido */
+@media (min-width: 900px) { .hero { height: 100dvh; } }
 @media (min-width: 900px) and (max-height: 699.98px) { .hero { height: auto; } }
 
 .hero__photo {
@@ -149,13 +152,12 @@
   z-index: 1;
   flex: 1;
   min-height: 0;
-  grid-template-rows: auto 1fr auto;
+  /* Mobile: titular arriba, párrafo y botones ocupan el resto. Desktop: titular centrado, párrafo abajo */
+  grid-template-rows: auto 1fr;
   row-gap: 3vh;
   padding-top: 2vh;
   box-sizing: border-box;
 }
-.hero__tag { justify-content: flex-end; }
-@media (min-width: 900px) { .hero__tag { display: flex; } }
 .hero__title {
   margin: 0;
   font-family: var(--font-display);
@@ -181,6 +183,7 @@
 }
 .hero__lead { margin: 0; font-size: 16px; line-height: 1.5; color: var(--ink-2); max-width: 44ch; text-wrap: pretty; }
 @media (min-width: 900px) {
+  .hero__grid { grid-template-rows: 1fr auto; }
   .hero__head { align-self: center; gap: 2.4vh; }
   .hero__intro { align-self: auto; justify-content: flex-start; gap: 3vh; padding-bottom: 4vh; }
   .hero__lead { font-size: 19px; }
@@ -209,8 +212,9 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  height: 56px;
-  padding: 0 24px 0 8px;
+  /* Más bajas que los botones (52px): las marcas acompañan, la acción manda */
+  height: 40px;
+  padding: 0 20px 0 6px;
   border-radius: 100px;
   background: var(--paper-2);
   border: 1px solid var(--hairline);
@@ -218,8 +222,10 @@
 }
 .brand__name { font-family: var(--font-display); font-weight: 700; font-size: 18px; letter-spacing: -.02em; }
 /* Marcas con logo: solo el logo, que ya incluye el nombre */
-.brand--logo { padding: 0 28px; --logo-h: 28px; }
-.brand--logo .logo--stacked { --logo-h: 44px; }
+.brand--logo { padding: 0 20px; --logo-h: 18px; }
+.brand--logo .logo--stacked { --logo-h: 28px; }
+/* Logos que son solo letras llenan todo el alto: un poco más bajos para pesar igual que los que tienen ícono */
+.brand--logo .logo--dense { --logo-h: 14px; }
 /* Sin movimiento: una sola copia de las marcas, en filas centradas */
 @media (prefers-reduced-motion: reduce) {
   .marquee__track { flex-wrap: wrap; justify-content: center; width: auto; }
@@ -229,8 +235,11 @@
 
 /* ---------- Cuentas (stacking) ---------- */
 
-.stack-item { position: sticky; top: 96px; margin-bottom: 24px; }
-@media (min-width: 900px) { .stack-item { margin-bottom: 48px; } }
+/* En mobile, una pausa entre tarjetas: la actual queda fija y entera (con su CTA) antes de que llegue la siguiente */
+.stack-item { position: sticky; top: 96px; margin-bottom: 32svh; }
+.stack-item:last-child { margin-bottom: 24px; }
+.account { will-change: transform, opacity; }
+@media (min-width: 900px) { .stack-item, .stack-item:last-child { margin-bottom: 48px; } }
 @media (prefers-reduced-motion: reduce) { .stack-item { position: relative; top: auto !important; } }
 
 .account {

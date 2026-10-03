@@ -47,7 +47,22 @@
   const steps = [...document.querySelectorAll('[data-step]')];
   const stepIndex = [...document.querySelectorAll('[data-step-index] li')];
   const stacks = [...document.querySelectorAll('[data-stack]')];
+  const touchMq = matchMedia('(pointer: coarse)');
   let activeStep = 0;
+
+  // Alto de pantalla estable: en el celu la barra del navegador aparece al subir y cambia
+  // innerHeight. Ese cambio no debe mover las tarjetas, así que solo se toma un alto nuevo
+  // cuando cambia el ancho (girar el celu) o en pantallas sin barra (compu).
+  let viewH = window.innerHeight;
+  let viewW = window.innerWidth;
+  const syncView = () => {
+    if (!touchMq.matches || window.innerWidth !== viewW) {
+      viewH = window.innerHeight;
+      viewW = window.innerWidth;
+      return true;
+    }
+    return false;
+  };
 
   // El hero se desenfoca y se apaga de a poco al salir; arranca recién pasado el 20% del scroll.
   const updateHero = () => {
@@ -61,8 +76,11 @@
     const h = hero.offsetHeight || 1;
     const p = Math.min(1, Math.max(0, (window.scrollY - h * 0.2) / (h * 0.8)));
     const e = p * p * (3 - 2 * p);
-    hero.style.filter = e > 0.002 ? `blur(${(e * 6).toFixed(2)}px)` : '';
     hero.style.opacity = String(1 - e * 0.35);
+    // En pantallas táctiles solo se apaga: desenfocar la foto a pantalla completa en cada
+    // cuadro traba el scroll del celu
+    if (touchMq.matches) { hero.style.filter = ''; hero.style.transform = ''; return; }
+    hero.style.filter = e > 0.002 ? `blur(${(e * 6).toFixed(2)}px)` : '';
     hero.style.transform = e > 0.002 ? `scale(${(1 - e * 0.02).toFixed(4)})` : '';
   };
 
@@ -99,7 +117,7 @@
       if (!off) {
         // Si la tarjeta es más alta que la pantalla, recorre todo su contenido antes de fijarse
         const t = base + i * step;
-        w.style.top = Math.min(t, window.innerHeight - card.offsetHeight - 16 + i * step) + 'px';
+        w.style.top = Math.min(t, viewH - card.offsetHeight - 16 + i * step) + 'px';
       }
       if (off || i === stacks.length - 1) {
         card.style.opacity = '';
@@ -110,7 +128,8 @@
       const h = card.offsetHeight || 1;
       const d = stacks[i + 1].getBoundingClientRect().top - card.getBoundingClientRect().top;
       const p = 1 - Math.min(1, Math.max(0, d / h));
-      const e = Math.min(1, p * 2.2);
+      // El desenfoque arranca recién cuando la siguiente tapa un 15%: antes se lee entera, CTA incluido
+      const e = Math.min(1, Math.max(0, (p - 0.15) * 2.4));
       card.style.opacity = String(1 - e * 0.75);
       card.style.transform = `scale(${1 - p * 0.055})`;
       card.style.filter = p > 0.001 ? `blur(${(e * 20).toFixed(2)}px) saturate(${(1 - e * 0.8).toFixed(2)})` : '';
@@ -129,7 +148,7 @@
     });
   };
   window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
+  window.addEventListener('resize', () => { syncView(); onScroll(); });
   reducedMq.addEventListener('change', onScroll);
   wideMq.addEventListener('change', onScroll);
   window.addEventListener('load', onScroll);
@@ -137,6 +156,7 @@
   /* ---------- Foto del hero en mobile: empieza debajo del párrafo, nunca detrás del texto ---------- */
 
   const lead = document.querySelector('.hero__lead');
+  let lastPhotoW = window.innerWidth;
   const fitPhoto = () => {
     if (!hero || !lead) return;
     if (wideMq.matches) { hero.style.removeProperty('--photo-top'); return; }
@@ -144,7 +164,8 @@
     hero.style.setProperty('--photo-top', Math.round(top) + 'px');
   };
   fitPhoto();
-  window.addEventListener('resize', fitPhoto);
+  // Solo cuando cambia el ancho: la barra del navegador no mueve el párrafo
+  window.addEventListener('resize', () => { if (window.innerWidth !== lastPhotoW) { lastPhotoW = window.innerWidth; fitPhoto(); } });
   wideMq.addEventListener('change', fitPhoto);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitPhoto);
   onScroll();
